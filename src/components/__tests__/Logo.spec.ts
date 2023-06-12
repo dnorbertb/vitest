@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import Logo from '../Logo.vue'
+import AppLogo from '../AppLogo.vue'
 
 describe('Logo Check', () => {
   it('Checks if renders properly', () => {
-    const wrapper = mount(Logo)
+    const wrapper = mount(AppLogo)
     expect(wrapper.text()).toContain('To Do List');
   })
 })
