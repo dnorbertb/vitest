@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  type: HTMLButtonElement['type'];
+  type: HTMLButtonElement["type"];
   text: string;
 }>();
 </script>

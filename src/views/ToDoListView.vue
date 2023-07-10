@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useToDoStore } from '@/stores/itemsStore';
-import VTextInput from '@/components/UI/VTextInput.vue';
-import VButton from '@/components/UI/VButton.vue';
-import ListItem from '@/components/ListItem.vue';
-import AppLogo from '../components/AppLogo.vue';
+import { ref } from "vue";
+import { useToDoStore } from "@/stores/itemsStore";
+import VTextInput from "@/components/UI/VTextInput.vue";
+import VButton from "@/components/UI/VButton.vue";
+import ListItem from "@/components/ListItem.vue";
+import AppLogo from "../components/AppLogo.vue";
 
 const toDoStore = useToDoStore();
 
-const itemTitle = ref('');
+const itemTitle = ref("");
 const submitHandler = () => {
-  if (!itemTitle) return;
+  if (!itemTitle.value) return;
   toDoStore.addItem({ value: itemTitle.value, isDone: false });
-  itemTitle.value = '';
+  itemTitle.value = "";
 };
 </script>
 

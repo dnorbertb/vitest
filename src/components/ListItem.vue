@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useToDoStore } from '@/stores/itemsStore';
-import VCheckbox from './UI/VCheckbox.vue';
-import VButton from './UI/VButton.vue';
-import type { IToDoItem } from '@/types/IToDoItem';
+import { useToDoStore } from "@/stores/itemsStore";
+import VCheckbox from "./UI/VCheckbox.vue";
+import VButton from "./UI/VButton.vue";
+import type { IToDoItem } from "@/types/IToDoItem";
 
 interface IEvent extends Event {
   target: HTMLInputElement;
