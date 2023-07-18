@@ -7,7 +7,7 @@ defineProps<{
 
 <template>
   <button class="button" :type="type">
-    {{ text.toUpperCase() }}
+    {{ text }}
   </button>
 </template>
 <style scoped>
@@ -20,6 +20,7 @@ defineProps<{
   background-color: darksalmon;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-transform: uppercase;
 }
 
 .button:focus {

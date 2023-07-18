@@ -1,7 +1,6 @@
 <script setup lang="ts">
 interface IProps {
   value: boolean;
-  placeholder?: string;
 }
 
 defineProps<IProps>();
