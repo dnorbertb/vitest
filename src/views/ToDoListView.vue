@@ -14,6 +14,14 @@ const submitHandler = () => {
   toDoStore.addItem({ value: itemTitle.value, isDone: false });
   itemTitle.value = "";
 };
+
+const removeItem = (id: number) => {
+  toDoStore.removeItem(id);
+};
+
+const setItemDone = ({ id, status }: { id: number; status: boolean }) => {
+  toDoStore.setIsDone(id, status);
+};
 </script>
 
 <template>
@@ -29,6 +37,8 @@ const submitHandler = () => {
           v-for="(item, index) in toDoStore.toDoItems"
           :key="`item-${index}`"
           v-bind="item"
+          @remove-item="removeItem"
+          @set-item-done="setItemDone"
         />
       </div>
     </section>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useToDoStore } from "@/stores/itemsStore";
-import VCheckbox from "./UI/VCheckbox.vue";
-import VButton from "./UI/VButton.vue";
+import VButton from "@/components/UI/VButton.vue";
+import VCheckbox from "@/components/UI/VCheckbox.vue";
 import type { IToDoItem } from "@/types/IToDoItem";
 
 interface IEvent extends Event {
@@ -9,28 +8,23 @@ interface IEvent extends Event {
 }
 
 const props = defineProps<IToDoItem>();
-const toDoStore = useToDoStore();
-
-const removeItem = () => {
-  toDoStore.removeItem(props.id);
-};
-
-const setIsDone = (state: boolean) => {
-  toDoStore.setIsDone(props.id, state);
-};
+const emit = defineEmits<{
+  (e: "setItemDone", value: { id: number; status: boolean }): void;
+  (e: "removeItem", value: number): void;
+}>();
 </script>
 <template>
   <div class="item">
     <VCheckbox
       :value="isDone"
-      @change="(v: IEvent) => setIsDone(v.target.checked)"
+      @change="(v: IEvent) => emit('setItemDone', {id: props.id, status: v.target.checked})"
     />
     <h5 :class="['item-title', isDone && 'line-through']">{{ value }}</h5>
     <VButton
       style="margin-left: auto"
       type="button"
       text="Delete"
-      @click="removeItem"
+      @click="() => emit('removeItem', props.id)"
     />
   </div>
 </template>
