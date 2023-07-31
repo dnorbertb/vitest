@@ -1,27 +1,27 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { mount } from "@vue/test-utils";
-import { setActivePinia, createPinia } from "pinia";
 import ToDoListView from "@/views/ToDoListView.vue";
 import { useToDoStore } from "@/stores/itemsStore";
+import ListItem from "@/components/ListItem.vue";
 
 describe("ToDoList view tests", () => {
-  setActivePinia(createPinia());
-  const testItem = "Yolo";
-  const wrapper = mount(ToDoListView);
-  const toDoStore = useToDoStore();
+  vi.mock("@/stores/itemsStore", () => ({
+    useToDoStore: vi.fn().mockReturnValue({
+      toDoItems: [
+        {
+          id: 1,
+          value: "This is test item",
+          isDone: true,
+        },
+      ],
+      removeItem: vi.fn(),
+      addItem: vi.fn(),
+      setIsDone: vi.fn(),
+    }),
+  }));
 
-  beforeEach(() =>
-    toDoStore.toDoItems.forEach((i) => toDoStore.removeItem(i.id))
-  );
-
-  const fillAndSubmitForm = async () => {
-    const input = wrapper.find('input[type="text"]');
-    await input.setValue(testItem);
-    const form = wrapper.find("form.add-item-form");
-    await form.trigger("submit");
-  };
-
-  it("Tests if ToDoListView renders", async () => {
+  test("ToDoListView renders", async () => {
+    const wrapper = mount(ToDoListView);
     const contentSection = wrapper.get("section.content");
     const form = wrapper.find("form.add-item-form");
     const itemList = wrapper.find("div.items-list");
@@ -30,16 +30,49 @@ describe("ToDoList view tests", () => {
     expect(itemList.isVisible()).toBeTruthy();
   });
 
-  it("Tests if form adds item to the store", async () => {
-    await fillAndSubmitForm();
-    const item = toDoStore.toDoItems.find((i) => i.value === testItem);
-    expect(item).toBeTruthy();
-    expect(item?.value).toEqual(testItem);
+  test("If test item is visible in the list", () => {
+    const wrapper = mount(ToDoListView);
+    expect(wrapper.text()).toContain("This is test item");
   });
 
-  it("Tests if store item gets rendered", async () => {
-    await fillAndSubmitForm();
-    const item = wrapper.find("div.items-list");
-    expect(item.text()).toContain(testItem);
+  test("addItem gets called with right values", () => {
+    const wrapper = mount(ToDoListView);
+    const textInput = wrapper.find('input[data-testid="formTextInput"]');
+    const button = wrapper.find('button[data-testid="formSubmitButton"]');
+    const testValue = "value";
+    textInput.setValue(testValue);
+    // Be aware that even if button in the template has type of "submit" and you trigger "click" event on element
+    // Form will not get submitted! Example:
+    // button.trigger("click") - not work!
+    button.trigger("submit"); // - work!
+    const calls = vi.mocked(useToDoStore()).addItem.mock.calls;
+    expect(vi.mocked(useToDoStore()).addItem).toHaveBeenCalled();
+    expect(calls[0][0]).toEqual({ value: testValue, isDone: false });
+  });
+
+  test("removeItem and setIsDone is called", () => {
+    const wrapper = mount(ToDoListView);
+    const listItem = wrapper.findComponent(ListItem);
+    listItem.vm.$emit("removeItem", 1);
+    listItem.vm.$emit("setItemDone", { id: 1, status: true });
+    expect(vi.mocked(useToDoStore()).removeItem).toHaveBeenCalled();
+    expect(vi.mocked(useToDoStore()).setIsDone).toHaveBeenCalled();
+  });
+
+  test("if toogle filters items", async () => {
+    const wrapper = mount(ToDoListView);
+    // Before applying filter
+    const items = wrapper.findAllComponents(ListItem);
+    expect(items.length).toBe(1);
+
+    // Applying filter
+    // Not just (VToogle) below because TS shows error
+    // This probably occurs because VToogle is generic component and this is quite new feature in Vue, can be not completely supported!
+    const listItem = wrapper.findComponent({ name: "VToogle" });
+    await listItem.vm.$emit("update:modelValue", "todo");
+
+    // After applying
+    const itemsAfter = wrapper.findAllComponents(ListItem);
+    expect(itemsAfter.length).toBe(0);
   });
 });

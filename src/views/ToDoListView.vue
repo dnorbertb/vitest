@@ -1,14 +1,27 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useToDoStore } from "@/stores/itemsStore";
 import VTextInput from "@/components/UI/VTextInput.vue";
 import VButton from "@/components/UI/VButton.vue";
 import ListItem from "@/components/ListItem.vue";
 import AppLogo from "../components/AppLogo.vue";
+import VToogle from "@/components/UI/VToogle.vue";
 
 const toDoStore = useToDoStore();
-
 const itemTitle = ref("");
+const toogleValue = ref<"all" | "todo">("all");
+const toogleItems = [
+  { text: "Pokaż wszystkie", value: "all" },
+  { text: "Pokaż do zrobienia", value: "todo" },
+];
+
+const filteredItems = computed(() =>
+  toDoStore.toDoItems.filter((item) => {
+    if (toogleValue.value === "all") return true;
+    return item.isDone === false;
+  })
+);
+
 const submitHandler = () => {
   if (!itemTitle.value) return;
   toDoStore.addItem({ value: itemTitle.value, isDone: false });
@@ -29,12 +42,17 @@ const setItemDone = ({ id, status }: { id: number; status: boolean }) => {
     <AppLogo />
     <section class="content">
       <form class="add-item-form" @submit.prevent="submitHandler">
-        <VTextInput v-model="itemTitle" placeholder="Wpisz tytuł..." />
-        <VButton text="Dodaj" type="submit" />
+        <VTextInput
+          data-testid="formTextInput"
+          v-model="itemTitle"
+          placeholder="Wpisz tytuł..."
+        />
+        <VButton data-testid="formSubmitButton" text="Dodaj" type="submit" />
       </form>
+      <VToogle :items="toogleItems" v-model="toogleValue" />
       <div class="items-list">
         <ListItem
-          v-for="(item, index) in toDoStore.toDoItems"
+          v-for="(item, index) in filteredItems"
           :key="`item-${index}`"
           v-bind="item"
           @remove-item="removeItem"

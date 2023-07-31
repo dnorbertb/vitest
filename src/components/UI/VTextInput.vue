@@ -1,33 +1,23 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
 interface IProps {
   modelValue: string;
   placeholder?: string;
 }
 
 interface IEmits {
-  (e: 'update:modelValue', value: string): void;
+  (e: "update:modelValue", value: string): void;
 }
 
-const props = defineProps<IProps>();
+defineProps<IProps>();
 const emit = defineEmits<IEmits>();
-
-const computedModel = computed({
-  get() {
-    return props.modelValue;
-  },
-  set(value: string) {
-    emit('update:modelValue', value);
-  },
-});
 </script>
 
 <template>
   <input
     class="text-input"
     :placeholder="placeholder"
-    v-model="computedModel"
+    :value="modelValue"
+    @input="(e) => emit('update:modelValue', (e.target as HTMLInputElement).value)"
     type="text"
   />
 </template>

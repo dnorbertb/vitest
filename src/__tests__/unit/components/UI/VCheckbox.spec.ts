@@ -1,7 +1,6 @@
 import VCheckbox from "@/components/UI/VCheckbox.vue";
 import { mount } from "@vue/test-utils";
 import { describe, expect, test } from "vitest";
-import { ref } from "vue";
 
 describe("VCheckbox", () => {
   test("if component renders", () => {

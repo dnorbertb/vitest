@@ -23,7 +23,7 @@ const emit = defineEmits<{
     <VButton
       style="margin-left: auto"
       type="button"
-      text="Delete"
+      text="Usuń"
       @click="() => emit('removeItem', props.id)"
     />
   </div>
@@ -35,6 +35,7 @@ const emit = defineEmits<{
   align-items: center;
   justify-content: flex-start;
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .item-title {
