@@ -6,7 +6,7 @@ import { useToDoStore } from "@/stores/itemsStore";
 
 // Chat GPT says that those are integration tests
 // These tests are checking if toDoStore is properly integrated with ToDoListView component
-// After some research I find that such tests are not really popular
+// After some research I found that such tests are not really popular
 describe("ToDoList view tests", () => {
   setActivePinia(createPinia());
   const testItem = "Yolo";
