@@ -3,7 +3,7 @@ import { mount } from "@vue/test-utils";
 import { describe, expect, it } from "vitest";
 
 describe("VButton", () => {
-  it("Checks if component renders", () => {
+  it("Should render", () => {
     const wrapper = mount(VButton, {
       props: {
         type: "button",
@@ -14,7 +14,7 @@ describe("VButton", () => {
     expect(wrapper.text().toLocaleLowerCase()).toContain("click me");
   });
 
-  it("Checks if button gets right type", async () => {
+  it("Should have right type set by prop", async () => {
     const wrapper = mount(VButton, {
       props: {
         type: "button",
@@ -29,7 +29,7 @@ describe("VButton", () => {
     expect(wrapper.attributes().type).toBe("submit");
   });
 
-  it("Checks if click event gets emitted", () => {
+  it("Should emit click event", () => {
     const wrapper = mount(VButton, {
       props: {
         type: "button",

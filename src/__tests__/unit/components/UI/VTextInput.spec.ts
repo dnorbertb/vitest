@@ -1,9 +1,9 @@
 import VTextInput from "@/components/UI/VTextInput.vue";
 import { mount } from "@vue/test-utils";
-import { describe, expect, test } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("VTextInput", () => {
-  test("if element renders", () => {
+  it("Should render", () => {
     const testValue = "initialText";
     const wrapper = mount(VTextInput, {
       props: {
@@ -15,7 +15,7 @@ describe("VTextInput", () => {
     expect(wrapper.find("input").element.value).toBe(testValue);
   });
 
-  test("if input updates model value", async () => {
+  it("Should update v-model", async () => {
     const wrapper = mount(VTextInput, {
       props: {
         modelValue: "initialText",

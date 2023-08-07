@@ -1,9 +1,9 @@
 import VToogle from "@/components/UI/VToogle.vue";
 import { mount } from "@vue/test-utils";
-import { describe, expect, test } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("VToogle component", () => {
-  test("component renders", () => {
+  it("Should render", () => {
     const wrapper = mount(VToogle, {
       props: {
         modelValue: "value",
@@ -16,7 +16,7 @@ describe("VToogle component", () => {
     expect(wrapper.text()).toContain("Test");
   });
 
-  test("Component changes v-model", async () => {
+  it("Should update v-model", async () => {
     const wrapper = mount(VToogle, {
       props: {
         modelValue: "value",
@@ -37,7 +37,7 @@ describe("VToogle component", () => {
     expect(wrapper.props("modelValue")).toBe("value");
   });
 
-  test("There is one active button with active class", async () => {
+  it("Should have only one active button with active class", async () => {
     const wrapper = mount(VToogle, {
       props: {
         modelValue: "value",

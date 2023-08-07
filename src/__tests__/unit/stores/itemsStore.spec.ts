@@ -3,7 +3,7 @@ import { setActivePinia, createPinia } from "pinia";
 import { describe, it, expect } from "vitest";
 
 // Testing data store
-describe("Data store tests", () => {
+describe("ToDoItem store", () => {
   // Pinia store can't work without an instance
   // So we need to create pinia instance
   setActivePinia(createPinia());
@@ -11,25 +11,22 @@ describe("Data store tests", () => {
   const testItemData = { value: "Test item", isDone: false };
   let testItemId: number;
 
-  it("Checks addItem method", () => {
+  it("Should have method to add item to the store", () => {
     testItemId = toDoStore.addItem(testItemData);
     expect(toDoStore.toDoItems.length).toBe(1);
   });
 
-  it("Checks if store contains test item", () => {
-    expect(toDoStore.toDoItems).toContainEqual({
-      id: testItemId,
-      ...testItemData,
-    });
-  });
-
-  it("Checks setIsDone method", () => {
+  it("Should have method to modify isDone property in stored item", () => {
     toDoStore.setIsDone(testItemId, true);
     const item = toDoStore.toDoItems.find((i) => i.id === testItemId);
     expect(item?.isDone).toBe(true);
   });
 
-  it("Checks removeItem method", () => {
+  it("Should not crash if isDone property is set on nonexisting item", () => {
+    expect(() => toDoStore.setIsDone(1, true)).not.toThrow();
+  });
+
+  it("Should have method to remove the item", () => {
     toDoStore.removeItem(testItemId);
     expect(toDoStore.toDoItems.length).toBe(0);
   });

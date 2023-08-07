@@ -1,9 +1,9 @@
 import VCheckbox from "@/components/UI/VCheckbox.vue";
 import { mount } from "@vue/test-utils";
-import { describe, expect, test } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("VCheckbox", () => {
-  test("if component renders", () => {
+  it("Should render", () => {
     const wrapper = mount(VCheckbox, {
       props: {
         value: true,
@@ -13,7 +13,7 @@ describe("VCheckbox", () => {
     expect(wrapper.isVisible()).toBeTruthy();
   });
 
-  test("if component emits change", async () => {
+  it("Should emit change event", async () => {
     const wrapper = mount(VCheckbox, {
       props: {
         value: true,

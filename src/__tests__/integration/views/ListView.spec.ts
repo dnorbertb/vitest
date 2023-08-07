@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, test } from "vitest";
 import { mount } from "@vue/test-utils";
 import { setActivePinia, createPinia } from "pinia";
 import ToDoListView from "@/views/ToDoListView.vue";
@@ -7,7 +7,7 @@ import { useToDoStore } from "@/stores/itemsStore";
 // Chat GPT says that those are integration tests
 // These tests are checking if toDoStore is properly integrated with ToDoListView component
 // After some research I found that such tests are not really popular
-describe("ToDoList view tests", () => {
+describe("ToDoList view integration test", () => {
   setActivePinia(createPinia());
   const testItem = "Yolo";
   const wrapper = mount(ToDoListView);
@@ -24,7 +24,7 @@ describe("ToDoList view tests", () => {
     await form.trigger("submit");
   };
 
-  it("Tests if ToDoListView renders", async () => {
+  it("Should render", async () => {
     const contentSection = wrapper.get("section.content");
     const form = wrapper.find("form.add-item-form");
     const itemList = wrapper.find("div.items-list");
@@ -33,14 +33,14 @@ describe("ToDoList view tests", () => {
     expect(itemList.isVisible()).toBeTruthy();
   });
 
-  it("Tests if form adds item to the store", async () => {
+  test("Form adds item to the store", async () => {
     await fillAndSubmitForm();
     const item = toDoStore.toDoItems.find((i) => i.value === testItem);
     expect(item).toBeTruthy();
     expect(item?.value).toEqual(testItem);
   });
 
-  it("Tests if store item gets rendered", async () => {
+  it("Should show the item", async () => {
     await fillAndSubmitForm();
     const item = wrapper.find("div.items-list");
     expect(item.text()).toContain(testItem);

@@ -1,10 +1,10 @@
-import { describe, expect, test, vi } from "vitest";
+import { beforeEach, describe, expect, it, test, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import ToDoListView from "@/views/ToDoListView.vue";
 import { useToDoStore } from "@/stores/itemsStore";
 import ListItem from "@/components/ListItem.vue";
 
-describe("ToDoList view tests", () => {
+describe("ToDoList", () => {
   vi.mock("@/stores/itemsStore", () => ({
     useToDoStore: vi.fn().mockReturnValue({
       toDoItems: [
@@ -20,7 +20,11 @@ describe("ToDoList view tests", () => {
     }),
   }));
 
-  test("ToDoListView renders", async () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("Should render", async () => {
     const wrapper = mount(ToDoListView);
     const contentSection = wrapper.get("section.content");
     const form = wrapper.find("form.add-item-form");
@@ -30,12 +34,12 @@ describe("ToDoList view tests", () => {
     expect(itemList.isVisible()).toBeTruthy();
   });
 
-  test("If test item is visible in the list", () => {
+  it("Should have items visible in the list", () => {
     const wrapper = mount(ToDoListView);
     expect(wrapper.text()).toContain("This is test item");
   });
 
-  test("addItem gets called with right values", () => {
+  it("Should have addItem method called with right arguments", () => {
     const wrapper = mount(ToDoListView);
     const textInput = wrapper.find('input[data-testid="formTextInput"]');
     const button = wrapper.find('button[data-testid="formSubmitButton"]');
@@ -50,7 +54,14 @@ describe("ToDoList view tests", () => {
     expect(calls[0][0]).toEqual({ value: testValue, isDone: false });
   });
 
-  test("removeItem and setIsDone is called", () => {
+  test("Form shouldn't call addItem method in pinia store if text input is empty", async () => {
+    const wrapper = mount(ToDoListView);
+    const button = wrapper.find('button[data-testid="formSubmitButton"]');
+    await button.trigger("submit");
+    expect(vi.mocked(useToDoStore()).addItem).not.toHaveBeenCalled();
+  });
+
+  it("Should have removeItem and setIsDone triggered by list item", () => {
     const wrapper = mount(ToDoListView);
     const listItem = wrapper.findComponent(ListItem);
     listItem.vm.$emit("removeItem", 1);
@@ -59,7 +70,7 @@ describe("ToDoList view tests", () => {
     expect(vi.mocked(useToDoStore()).setIsDone).toHaveBeenCalled();
   });
 
-  test("if toogle filters items", async () => {
+  it("Should react on filters", async () => {
     const wrapper = mount(ToDoListView);
     // Before applying filter
     const items = wrapper.findAllComponents(ListItem);

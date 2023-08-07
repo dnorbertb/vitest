@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
+    "test:coverage": "vitest --run --coverage",
     "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
@@ -22,6 +23,7 @@
     "@types/lodash": "^4.14.196",
     "@types/node": "^18.16.17",
     "@vitejs/plugin-vue": "^4.2.3",
+    "@vitest/coverage-v8": "^0.34.1",
     "@vue/test-utils": "^2.3.2",
     "@vue/tsconfig": "^0.4.0",
     "jsdom": "^22.1.0",

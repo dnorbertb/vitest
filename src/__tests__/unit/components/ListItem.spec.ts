@@ -1,9 +1,9 @@
 import ListItem from "@/components/ListItem.vue";
 import { mount } from "@vue/test-utils";
-import { describe, expect, it, test } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("ListItem", () => {
-  test("if item gets rendered", () => {
+  it("Should render", () => {
     const testItemValue = "test value";
     const wrapper = mount(ListItem, {
       props: {
@@ -15,7 +15,7 @@ describe("ListItem", () => {
     expect(wrapper.text()).toContain(testItemValue);
   });
 
-  test("if item emits setItemDone", async () => {
+  it("Should emit setItemDone", async () => {
     const wrapper = mount(ListItem, {
       props: {
         id: 1,
@@ -29,7 +29,7 @@ describe("ListItem", () => {
     expect(wrapper.emitted()).toHaveProperty("setItemDone");
   });
 
-  test("if item emits removeItem", async () => {
+  it("Should emit removeItem", async () => {
     const wrapper = mount(ListItem, {
       props: {
         id: 1,
